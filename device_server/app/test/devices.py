@@ -3,6 +3,14 @@ from app.test.fixtures import app
 _base_set = [i for i in range(1000)]
 
 def generate_mock_data(app):
+	"""generates test data for device related tests in /device folder
+	params:
+	- app: pytest fixture: current/generated test app
+	returns:
+	multiplier_sets: list of sets: a list of sets where each is a set
+	 of multiplier per each multiplier in config
+	none_multiplier_set: set: a set of multipliers that are not always devided by config multipliers
+	"""
 	with app.app_context():
 		roles_by_multiplier = app.config['ROLES_BY_MULTIPLIER']
 		multipliers = list(roles_by_multiplier.keys())

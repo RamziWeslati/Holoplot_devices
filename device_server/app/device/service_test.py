@@ -1,6 +1,6 @@
 from app.test.fixtures import app
 from app.test.devices import generate_mock_data
-# from app.test.devices import device_3_ids, device_5_ids, device_2_ids   #hardcoded multipliers
+# from app.test.devices import device_3_ids, device_5_ids, device_2_ids   #Hardcoded multipliers
 
 from .service import DeviceService
 
@@ -16,6 +16,7 @@ def test_device_roles(app):
         device_multiplier_ids, device_none_multiplier_ids = generate_mock_data(app)
         results_one_multiplier_only= []
 
+        #get role for ids that can be devided by EACH multiplier set
         for i in range(n_multipliers):
             if (i == n_multipliers):
                 current_mult = i
@@ -27,14 +28,18 @@ def test_device_roles(app):
                                 lambda id_: DeviceService.get_role(id_),
                                 device_multiplier_ids[current_mult].difference(
                                     *(device_multiplier_ids[:current_mult] + device_multiplier_ids[next_mult:]))))
+
+        #get role for ids that can be devided by ALL multipliers
         device_all_multipliers = map(
                 lambda id_: DeviceService.get_role(id_),
                 set.intersection(*device_multiplier_ids))
+
+        #get role for ids that can be devided by NO multipliers
         device_none_multipliers = map(
                 lambda id_: DeviceService.get_role(id_),
                 device_none_multiplier_ids)
 
-        #evaluate results
+        #compare actual results against expected results
         for mult_index, result_roles in enumerate(results_one_multiplier_only):
             assert all( role == expected_roles[mult_index] for role in result_roles)
         assert all( role == role_all_multipliers for role in device_all_multipliers)

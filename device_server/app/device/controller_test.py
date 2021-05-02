@@ -19,6 +19,7 @@ def test_get_role(app, client: FlaskClient):
         results_all_multiplier = []
         results_none_multiplier = []
 
+        #get role for ids that can be devided by EACH multiplier set
         for i in range(n_multipliers):
             if (i == n_multipliers):
                 current_mult = i
@@ -37,6 +38,8 @@ def test_get_role(app, client: FlaskClient):
                         follow_redirects=False).get_json())
             results_one_multiplier_only.append(_responses)
 
+
+        #get role for ids that can be devided by ALL multipliers
         for device_id in set.intersection(*device_multiplier_ids):
             with client:
                     results_all_multiplier.append(
@@ -44,6 +47,7 @@ def test_get_role(app, client: FlaskClient):
                         f"/api/device/{device_id}",
                         follow_redirects=False).get_json())
 
+        #get role for ids that can be devided by NO multipliers
         for device_id in device_none_multiplier_ids:
             with client:
                     results_none_multiplier.append(
@@ -51,7 +55,7 @@ def test_get_role(app, client: FlaskClient):
                         f"/api/device/{device_id}",
                         follow_redirects=False).get_json())
 
-        #evaluate results
+        #compare actual results against expected results
         for mult_index, result_roles in enumerate(results_one_multiplier_only):
             assert all( result['role'] == expected_roles[mult_index] for result in result_roles)
         assert all( result['role'] == role_all_multipliers for result in results_all_multiplier)
@@ -59,8 +63,7 @@ def test_get_role(app, client: FlaskClient):
 
 
 
-
-
+        #Hardcoded version
         # expected_only_3_role = 'Bing'
         # expected_only_5_role = 'Bang'
         # expected_3_5_role = 'Boom'

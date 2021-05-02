@@ -5,6 +5,14 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class BaseConfig:
+    """common config
+    - ROLES_BY_MULTIPLIER: dict: 
+        configuration for device role mapping,
+        key: int: multiplier to map ids
+        value: str: device role
+    - ROLE_ALL_MULTIPLIERS: str: role of devices that map to all multiplier roles
+    - ROLE_NONE_MULTIPLIERS: str: role of devices that do not map to any multiplier roles
+    """
     CONFIG_NAME = "base"
     DEBUG = False
     ROLES_BY_MULTIPLIER = {

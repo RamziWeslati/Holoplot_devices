@@ -1,3 +1,4 @@
+#base route to device related queries
 BASE_ROUTE = "device"
 
 def register_routes(api, app, root="api"):
