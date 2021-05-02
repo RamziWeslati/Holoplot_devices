@@ -5,14 +5,15 @@ class Device:
         roles_by_multiplier = current_app.config['ROLES_BY_MULTIPLIER']
         role_all_multipliers = current_app.config['ROLE_ALL_MULTIPLIERS']
         role_none_multipliers = current_app.config['ROLE_NONE_MULTIPLIERS']
-        _role = ''
+        n_multipliers = len(roles_by_multiplier)
+        _role = []
         for multiplier, role in roles_by_multiplier.items():
             if (id % multiplier == 0):
-                _role += role
+                _role.append(role)
 
     
         #assign role
-        if ( _role in roles_by_multiplier.values()):
-            self.role = _role
+        if (len(_role) == 1):
+            self.role = _role[0]
         else:
-            self.role = role_all_multipliers if _role else role_none_multipliers
+            self.role = role_all_multipliers if len(_role) == n_multipliers else role_none_multipliers
